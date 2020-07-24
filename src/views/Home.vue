@@ -1,18 +1,32 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-row align="center" justify="center" style="height: 100%;">
+    <v-col cols="5">
+      <span class="display-2">appointment assist</span>
+    </v-col>
+
+    <v-divider class="mx-5" inset vertical></v-divider>
+    <v-col cols="5">
+      <ConsulteeForm />
+    </v-col>
+  </v-row>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
+import ConsulteeForm from "@/components/ConsulteeForm";
 export default {
-  name: 'Home',
   components: {
-    HelloWorld
-  }
-}
+    ConsulteeForm,
+  },
+  data() {
+    return {
+      formActive: false,
+    };
+  },
+};
 </script>
+
+<style scoped>
+.home {
+  height: 100%;
+}
+</style>
