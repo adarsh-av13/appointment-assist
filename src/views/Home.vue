@@ -1,21 +1,25 @@
 <template>
-  <v-row align="center" justify="center" style="height: 100%;">
-    <v-col cols="5">
-      <span class="display-2">appointment assist</span>
-    </v-col>
+  <FormBox>
+    <v-row align="center" justify="center" style="height: 100%;">
+      <v-col cols="5">
+        <span class="display-2">appointment assist</span>
+      </v-col>
 
-    <v-divider class="mx-5" inset vertical></v-divider>
-    <v-col cols="5">
-      <ConsulteeForm />
-    </v-col>
-  </v-row>
+      <v-divider class="mx-5" inset vertical></v-divider>
+      <v-col cols="5">
+        <ConsulteeForm />
+      </v-col>
+    </v-row>
+  </FormBox>
 </template>
 
 <script>
 import ConsulteeForm from "@/components/ConsulteeForm";
+import FormBox from "@/components/FormBox.vue";
 export default {
   components: {
     ConsulteeForm,
+    FormBox,
   },
   data() {
     return {

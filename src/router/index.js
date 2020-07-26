@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
 import EditProfile from '../views/EditProfile.vue'
+import Dashboard from '../views/Dashboard.vue'
 
 Vue.use(VueRouter)
 
@@ -27,6 +28,12 @@ const routes = [{
         path: '/edit-profile',
         name: 'EditProfile',
         component: EditProfile,
+        props: true
+    },
+    {
+        path: '/dashboard',
+        name: 'Dashboard',
+        component: Dashboard,
         props: true
     },
     {
