@@ -48,7 +48,7 @@
 
 <script>
 import { validationMixin } from "vuelidate";
-// import api from "@/api/index";
+import api from "@/api/index";
 import { required, minLength, email, sameAs } from "vuelidate/lib/validators";
 export default {
   data() {
@@ -85,11 +85,15 @@ export default {
   },
   methods: {
     async register() {
-      // this.$v.$touch();
-      // let result = await api.register(this.email, this.password);
-      // if (result.registration == "success") {
-        this.$router.push({ name: "Login", params: { alert: true } });
-      // }
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        let result = await api.register(this.email, this.password);
+        if (result.error == false) {
+          this.$router.push({ name: "Login", params: { alert: true } });
+        } else {
+          this.$emit("errorAlert", result.msg);
+        }
+      }
     },
   },
   mixins: [validationMixin],

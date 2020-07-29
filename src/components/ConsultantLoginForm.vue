@@ -20,7 +20,7 @@
         @blur="$v.password.$touch()"
         required
         solo
-      />
+      ></v-text-field>
       <v-row justify="center">
         <v-btn @click="login" class="teal darken-5" width="90%" large dark>Login</v-btn>
       </v-row>
@@ -38,12 +38,13 @@
 
 <script>
 import { required, minLength, email } from "vuelidate/lib/validators";
+import api from "@/api/index";
 export default {
   data() {
     return {
       email: "",
       password: "",
-      showAlert: false
+      showAlert: false,
     };
   },
   computed: {
@@ -74,11 +75,18 @@ export default {
     },
   },
   methods: {
-    login() {
+    async login() {
       this.$v.$touch();
-      this.$router.push({name: 'EditProfile'});
-    }
-  }
+      if (!this.$v.$invalid) {
+        let result = await api.login(this.email, this.password);
+        if (result.error === false) {
+          this.$router.push({ name: "Dashboard" });
+        } else {
+          this.$emit("errorAlert", result.msg);
+        }
+      }
+    },
+  },
 };
 </script>
 

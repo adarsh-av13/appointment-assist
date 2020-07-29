@@ -4,26 +4,56 @@
       <v-toolbar-title>
         <router-link class="white--text text-decoration-none" :to="{name: 'Home'}">
           <div class="logo">
-            <span class="headline font-weight-light" style="letter-spacing: 0.1rem !important">appointment</span>
-            <span class="text-h4 assist" style="letter-spacing: 0.7rem !important; line-height: 1rem !important">assist</span>
+            <span
+              class="headline font-weight-light"
+              style="letter-spacing: 0.1rem !important"
+            >appointment</span>
+            <span
+              class="text-h4 assist"
+              style="letter-spacing: 0.7rem !important; line-height: 1rem !important"
+            >assist</span>
           </div>
         </router-link>
       </v-toolbar-title>
       <!-- <v-toolbar-items> -->
       <v-spacer></v-spacer>
-      <router-link :to="{name: 'Register'}">
-        <v-btn class="text--white text-decoration-underline" text>Register as a Consultant</v-btn>
-      </router-link>
-      <router-link :to="{name: 'Login'}">
-        <v-btn class="text--white text-decoration-underline" text>Login as a Consultant</v-btn>
-      </router-link>
+      <div v-if="isAuthenticated">
+        <router-link :to="{name: 'Profile'}">
+          <v-btn class="text--white" text>My Profile</v-btn>
+        </router-link>
+        <v-btn class="text--white" @click="logout" text>Logout</v-btn>
+      </div>
+      <div v-else>
+        <router-link :to="{name: 'Register'}">
+          <v-btn class="text--white" text>Register as a Consultant</v-btn>
+        </router-link>
+        <router-link :to="{name: 'Login'}">
+          <v-btn class="text--white" text>Login as a Consultant</v-btn>
+        </router-link>
+      </div>
       <!-- </v-toolbar-items> -->
     </v-toolbar>
   </nav>
 </template>
 
 <script>
-export default {};
+import api from "@/api/index";
+export default {
+  computed: {
+    isAuthenticated() {
+      return this.$store.state.isAuthenticated;
+    },
+  },
+  methods: {
+    async logout() {
+      let result = await api.logout();
+      if (result.error == false) {
+        this.$store.dispatch("set_authentication", false);
+        this.$router.replace({ name: "Login" });
+      }
+    },
+  },
+};
 </script>
 
 <style>

@@ -6,13 +6,14 @@
       </v-col>
       <v-divider class="mx-5" inset vertical></v-divider>
       <v-col cols="5">
-        <v-alert
-          v-model="showAlert"
-          transition="fade-transition"
-          type="success"
-          text
-        >Registration Successful. Log in to continue</v-alert>
-        <ConsultantLoginForm />
+        <v-alert v-model="showAlert" transition="fade-transition" type="success" text>
+          Registration Successful.
+          <br />Log in to continue
+        </v-alert>
+        <v-alert v-model="errorDisplay" transition="fade-transition" type="error" text>
+          {{error}}
+        </v-alert>
+        <ConsultantLoginForm @errorAlert="displayAlert" />
       </v-col>
     </v-row>
   </FormBox>
@@ -28,14 +29,12 @@ export default {
   },
   mounted() {
     this.showAlert = this.alert;
-    setTimeout(function () {
-      console.log("okay", this.showAlert);
-      this.showAlert = false;
-    }, 5000);
   },
   data() {
     return {
       showAlert: false,
+      errorDisplay: false,
+      error: ''
     };
   },
   props: {
@@ -44,7 +43,12 @@ export default {
       default: false,
     },
   },
-  methods: {},
+  methods: {
+    displayAlert(msg) {
+      this.errorDisplay = true;
+      this.error = msg;
+    }
+  },
 };
 </script>
 

@@ -9,7 +9,8 @@
       </v-col>
       <v-divider class="mx-5" inset vertical></v-divider>
       <v-col cols="5">
-        <ConsultantRegisterForm />
+        <v-alert v-model="showAlert" transition="fade-transition" type="error" text>{{error}}</v-alert>
+        <ConsultantRegisterForm @errorAlert="displayAlert" />
       </v-col>
     </v-row>
   </FormBox>
@@ -23,6 +24,18 @@ export default {
     ConsultantRegisterForm,
     FormBox,
   },
+  data() {
+    return {
+      error: "",
+      showAlert: false,
+    };
+  },
+  methods: {
+    displayAlert(msg) {
+      this.showAlert = true;
+      this.error = msg;
+    }
+  }
 };
 </script>
 
