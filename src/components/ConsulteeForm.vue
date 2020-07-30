@@ -6,13 +6,19 @@
     <v-text-field placeholder="E-mail" solo></v-text-field>
     <v-text-field placeholder="Mobile" solo></v-text-field>
     <v-row justify="center" align="center">
-      <v-btn class="teal darken-5" width="90%" large dark>Start</v-btn>
+      <v-btn class="teal darken-5" width="90%" @click="goIn()" large dark>Start</v-btn>
     </v-row>
   </v-form>
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    goIn() {
+      this.$router.push({name: 'Home'});
+    }
+  }
+};
 </script>
 
 <style>

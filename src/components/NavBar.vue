@@ -2,7 +2,7 @@
   <nav>
     <v-toolbar class="cyan darken-3" dark>
       <v-toolbar-title>
-        <router-link class="white--text text-decoration-none" :to="{name: 'Home'}">
+        <router-link class="white--text text-decoration-none" :to="{name: 'Landing'}">
           <div class="logo">
             <span
               class="headline font-weight-light"

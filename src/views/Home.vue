@@ -1,36 +1,33 @@
 <template>
-  <FormBox>
-    <v-row align="center" justify="center" style="height: 100%;">
-      <v-col cols="5">
-        <span class="display-2">appointment assist</span>
+  <v-row>
+      <v-col>
+          <v-row v-for="consultant in consultants" :key="consultant._id">
+          <Profile :profile="consultant" />
+          </v-row>
       </v-col>
-
-      <v-divider class="mx-5" inset vertical></v-divider>
-      <v-col cols="5">
-        <ConsulteeForm />
-      </v-col>
-    </v-row>
-  </FormBox>
+  </v-row>
 </template>
 
 <script>
-import ConsulteeForm from "@/components/ConsulteeForm";
-import FormBox from "@/components/FormBox.vue";
+import api from '@/api/index';
+import Profile from '@/views/Profile.vue';
 export default {
-  components: {
-    ConsulteeForm,
-    FormBox,
-  },
-  data() {
-    return {
-      formActive: false,
-    };
-  },
-};
+    async created(){
+        let result = await api.getAllConsultants();
+        this.consultants = result;
+        console.log(result);
+    },
+    components: {
+        Profile,
+    },
+    data() {
+        return {
+            consultants: [],
+        }
+    }
+}
 </script>
 
-<style scoped>
-.home {
-  height: 100%;
-}
+<style>
+
 </style>

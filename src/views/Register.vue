@@ -1,13 +1,13 @@
 <template>
   <FormBox>
     <v-row style="height: 100%;" justify="center" align="center">
-      <v-col cols="5">
+      <v-col cols="6">
         <div
-          class="my-2 overline text-uppercase"
+          class="my-2 overline text-uppercase form-header text-center"
           style="font-size: 2rem !important;"
-        >Create a New Account</div>
+        >Register</div>
       </v-col>
-      <v-divider class="mx-5" inset vertical></v-divider>
+      <v-divider class="mx-3" inset vertical></v-divider>
       <v-col cols="5">
         <v-alert v-model="showAlert" transition="fade-transition" type="error" text>{{error}}</v-alert>
         <ConsultantRegisterForm @errorAlert="displayAlert" />

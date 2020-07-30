@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Landing from '../views/Landing.vue'
 import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
 import EditProfile from '../views/EditProfile.vue'
@@ -12,6 +13,17 @@ Vue.use(VueRouter)
 
 const routes = [{
         path: '/',
+        name: 'Landing',
+        component: Landing,
+        beforeEnter: (_to, _from, next) => {
+            if (store.state.isAuthenticated)
+                next('/dashboard');
+            else
+                next();
+        }
+    },
+    {
+        path: '/home',
         name: 'Home',
         component: Home,
         beforeEnter: (_to, _from, next) => {

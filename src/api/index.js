@@ -94,6 +94,7 @@ const saveProfile = async(profile) => {
                 last_name: profile.lastName,
                 phone_no: profile.contactNo,
                 address: profile.address,
+                field: profile.field,
                 active_days: profile.activeDays,
                 start_time: profile.activeDays.length === 0 ? undefined : profile.startTime,
                 end_time: profile.activeDays.length === 0 ? undefined : profile.endTime
@@ -128,8 +129,29 @@ const getProfile = async() => {
                 'lastName': result.data.last_name,
                 'contactNo': result.data.phone_no,
                 'address': result.data.address,
-                'activeDays': result.data.active_days
+                'activeDays': result.data.active_days,
+                'field': result.data.field,
+                'startTime': result.data.start_time,
+                'endTime': result.data.end_time
             }
+        }
+    } catch (err) {
+        console.log(err);
+        return {
+            'error': true,
+        }
+    }
+}
+
+const getAllConsultants = async() => {
+    let currentUrl = url + 'consultants/';
+    try {
+        let result = await axios({
+            method: 'get',
+            url: currentUrl,
+        });
+        if (result.status === 200) {
+            return result.data;
         }
     } catch (err) {
         console.log(err);
@@ -143,5 +165,6 @@ export default {
     login,
     logout,
     saveProfile,
-    getProfile
+    getProfile,
+    getAllConsultants,
 }

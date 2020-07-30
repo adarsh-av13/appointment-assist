@@ -1,5 +1,5 @@
 <template>
-  <FormBox>
+  <div>
     <v-alert type="info" dense text>
       <v-row justify="space-between">
         <span>Complete your profile to continue</span>
@@ -25,16 +25,6 @@
           placeholder="last name"
           solo
         ></v-text-field>
-        <v-textarea
-          v-model="profile.address"
-          :error-messages="addressErrors"
-          label="address"
-          @focus="$v.$reset()"
-          placeholder="address"
-          solo
-        ></v-textarea>
-      </v-col>
-      <v-col cols="5">
         <v-text-field
           v-model="profile.contactNo"
           :error-messages="contactNoErrors"
@@ -44,14 +34,36 @@
           placeholder="contact number"
           solo
         ></v-text-field>
+        <v-textarea
+          v-model="profile.address"
+          :error-messages="addressErrors"
+          label="address"
+          @focus="$v.$reset()"
+          placeholder="address"
+          height="6rem"
+          no-resize
+          solo
+        ></v-textarea>
+      </v-col>
+      <v-col cols="5">
+        <v-text-field
+          v-model="profile.field"
+          :error-messages="fieldErrors"
+          label="field"
+          @focus="$v.$reset()"
+          placeholder="field"
+          solo
+        ></v-text-field>
         <v-row justify="center">
           <span class="gray">Working Days</span>
         </v-row>
         <v-row justify="center">
           <v-checkbox
-            v-for="day in days"
+            v-for="(day, index) in days"
             :key="day.day"
-            v-model="day.checked"
+            v-model="profile.activeDays"
+            :value="index"
+            color="cyan darken-3"
             class="ma-1"
             :label="day.day"
           ></v-checkbox>
@@ -60,7 +72,7 @@
           <span class="grey--text darken-2--text">Working Hours</span>
         </v-row>
 
-        <v-row justify="center">
+        <v-row justify="center" align="center">
           <v-col cols="4">
             <v-menu
               ref="menu1"
@@ -84,6 +96,7 @@
                   readonly
                   v-bind="attrs"
                   v-on="on"
+                  solo
                 ></v-text-field>
               </template>
               <v-time-picker
@@ -93,6 +106,9 @@
                 @click:minute="$refs.menu1.save(startTime)"
               ></v-time-picker>
             </v-menu>
+          </v-col>
+          <v-col cols="2">
+            <span>to</span>
           </v-col>
           <v-col cols="4">
             <v-menu
@@ -115,8 +131,10 @@
                   :disabled="!isDaysActive"
                   label="end time"
                   readonly
+                  class="text-align-center"
                   v-bind="attrs"
                   v-on="on"
+                  solo
                 ></v-text-field>
               </template>
               <v-time-picker
@@ -130,20 +148,20 @@
         </v-row>
       </v-col>
     </v-row>
-  </FormBox>
+  </div>
 </template>
 
 <script>
-import FormBox from "@/components/FormBox.vue";
+// import FormBox from "@/components/FormBox.vue";
 import { required, requiredIf, maxLength } from "vuelidate/lib/validators";
 import api from "@/api/index";
 export default {
   components: {
-    FormBox,
+    // FormBox,
   },
   computed: {
     isDaysActive() {
-      return this.getActiveDays().length !== 0;
+      return this.profile.activeDays.length !== 0;
     },
     firstNameErrors() {
       const errors = [];
@@ -156,6 +174,13 @@ export default {
       const errors = [];
       if (!this.$v.profile.lastName.$dirty) return errors;
       !this.$v.profile.lastName.required &&
+        errors.push("This field is required");
+      return errors;
+    },
+    fieldErrors() {
+      const errors = [];
+      if (!this.$v.profile.field.$dirty) return errors;
+      !this.$v.profile.field.required &&
         errors.push("This field is required");
       return errors;
     },
@@ -196,8 +221,8 @@ export default {
   },
   data() {
     return {
-      startTime: null,
-      endTime: null,
+      startTime: '00:00',
+      endTime: '00:00',
       menu1: false,
       menu2: false,
       profile: {
@@ -205,6 +230,7 @@ export default {
         lastName: "",
         address: "",
         contactNo: "",
+        field: "",
         activeDays: [],
         startTime: null,
         endTime: null,
@@ -212,27 +238,21 @@ export default {
       days: [
         {
           day: "Mon",
-          checked: false,
         },
         {
           day: "Tue",
-          checked: false,
         },
         {
           day: "Wed",
-          checked: false,
         },
         {
           day: "Thu",
-          checked: false,
         },
         {
           day: "Fri",
-          checked: false,
         },
         {
           day: "Sat",
-          checked: false,
         },
         {
           day: "Sun",
@@ -245,8 +265,6 @@ export default {
     async saveDetails() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
-        console.log("DA");
-        this.profile.activeDays = this.getActiveDays();
         if (this.isDaysActive) {
           this.profile.startTime = this.getTime(this.startTime);
           this.profile.endTime = this.getTime(this.endTime);
@@ -257,16 +275,6 @@ export default {
           this.$router.replace({name: 'Dashboard'});
         }
       }
-    },
-    getActiveDays() {
-      let activeDays = this.days
-        .map((day, index) => {
-          if (day.checked === true) return index;
-        })
-        .filter((index) => {
-          return index !== undefined;
-        });
-      return activeDays;
     },
     getTime(time) {
       let timeList = time.split(":");
@@ -292,6 +300,9 @@ export default {
         required,
         maxLength: maxLength(10),
       },
+      field: {
+        required,
+      }
     },
     startTime: {
       requiredIf: requiredIf(function () {
