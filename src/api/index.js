@@ -2,7 +2,7 @@ import axios from 'axios';
 import store from '@/store/index';
 
 // const test_url = 'http://localhost:3000/'
-const url = 'https://https://appointment-assist.herokuapp.com/'
+const url = 'https://appointment-assist.herokuapp.com/'
 const headers = {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': true,
