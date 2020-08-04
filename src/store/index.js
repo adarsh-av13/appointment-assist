@@ -8,7 +8,9 @@ export default new Vuex.Store({
         isAuthenticated: false,
         user_id: null,
         auth_token: null,
-        profile_built: false
+        profile_built: false,
+        profile: null,
+        consultee: null,
     },
     mutations: {
         SET_AUTHENTICATION: (state, payload) => {
@@ -18,6 +20,12 @@ export default new Vuex.Store({
         },
         PROFILE_BUILT: (state, payload) => {
             state.profile_built = payload;
+        },
+        SET_CONSULTEE_DETAILS: (state, payload) => {
+            state.consultee = payload;
+        },
+        SET_PROFILE: (state, payload) => {
+            state.profile = payload;
         }
     },
     actions: {
@@ -26,6 +34,12 @@ export default new Vuex.Store({
         },
         profile_built: ({ commit }, payload) => {
             commit('PROFILE_BUILT', payload);
+        },
+        set_consultee_details: ({ commit }, payload) => {
+            commit('SET_CONSULTEE_DETAILS', payload);
+        },
+        set_profile: ({ commit }, payload) => {
+            commit('SET_PROFILE', payload);
         }
     },
     modules: {}

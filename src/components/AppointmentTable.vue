@@ -1,40 +1,32 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="appointments"
-    :items-per-page="5"
-    class="elevation-1"
-  ></v-data-table>
+  <v-data-table :headers="headers" :items="appointments" :items-per-page="5" class="elevation-1"></v-data-table>
 </template>
 
 <script>
+import api from "@/api/index";
 export default {
-    data() {
-        return {
-            headers: [
-                {text: 'First Name', value: 'fName'},
-                {text: 'Last Name', value: 'lName'},
-                {text: 'Email', value: 'email'},
-                {text: 'Phone Number', value: 'phoneNo'},
-                {text: 'Token Number', value: 'tokenNo'},
-                {text: 'Date', value: 'date'},
-                {text: 'Status', value: 'status'}
-            ],
-            appointments: [
-              {
-                fName: 'Adarsh',
-                lName: 'Vijay',
-                email: 'blads@fdsf.com',
-                phoneNo: '9454353424',
-                tokenNo: '1',
-                date: '25th August 2020',
-                status: 'Pending'
-              }
-            ]
-            
-        }
-    }
-}
+  async created() {
+    let result = await api.getAppointments();
+    this.appointments = result.appointments;
+    this.appointments.forEach((appointment) => {
+      appointment.date = appointment.date.substr(0,10);
+    });
+  },
+  data() {
+    return {
+      headers: [
+        { text: "First Name", value: "first_name" },
+        { text: "Last Name", value: "last_name" },
+        { text: "Email", value: "email" },
+        { text: "Phone Number", value: "phone_no" },
+        { text: "Token Number", value: "token_no" },
+        { text: "Date", value: "date" },
+        { text: "Status", value: "status" },
+      ],
+      appointments: [],
+    };
+  },
+};
 </script>
 
 <style>

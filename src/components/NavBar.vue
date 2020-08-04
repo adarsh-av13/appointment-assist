@@ -18,9 +18,6 @@
       <!-- <v-toolbar-items> -->
       <v-spacer></v-spacer>
       <div v-if="isAuthenticated">
-        <router-link :to="{name: 'Profile'}">
-          <v-btn class="text--white" text>My Profile</v-btn>
-        </router-link>
         <v-btn class="text--white" @click="logout" text>Logout</v-btn>
       </div>
       <div v-else>
@@ -49,6 +46,8 @@ export default {
       let result = await api.logout();
       if (result.error == false) {
         this.$store.dispatch("set_authentication", false);
+        this.$store.dispatch("profile_built", null);
+        this.$store.dispatch("set_profile", null);
         this.$router.replace({ name: "Login" });
       }
     },

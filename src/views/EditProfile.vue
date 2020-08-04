@@ -237,6 +237,9 @@ export default {
       },
       days: [
         {
+          day: "Sun",
+        },
+        {
           day: "Mon",
         },
         {
@@ -253,10 +256,6 @@ export default {
         },
         {
           day: "Sat",
-        },
-        {
-          day: "Sun",
-          checked: false,
         },
       ],
     };

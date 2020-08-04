@@ -1,7 +1,8 @@
 import axios from 'axios';
 import store from '@/store/index';
 
-const url = 'http://localhost:3000/'
+// const test_url = 'http://localhost:3000/'
+const url = 'https://https://appointment-assist.herokuapp.com/'
 const headers = {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': true,
@@ -55,6 +56,10 @@ const login = async(email, password) => {
                 token: result.data.token
             });
             store.dispatch('profile_built', result.data.profile_setup);
+            if (result.data.profile_setup) {
+                let profile = await getProfile();
+                store.dispatch('set_profile', profile);
+            }
             return {
                 'error': false,
                 'success': true
@@ -124,7 +129,7 @@ const getProfile = async() => {
         });
         if (result.status === 200) {
             return {
-                'error': false,
+                'consultant_id': result.data._id,
                 'firstName': result.data.first_name,
                 'lastName': result.data.last_name,
                 'contactNo': result.data.phone_no,
@@ -160,6 +165,43 @@ const getAllConsultants = async() => {
         }
     }
 }
+
+const makeAppointment = async(appointment) => {
+    try {
+        let result = await axios({
+            method: 'post',
+            url: url + 'appointments/make',
+            data: appointment,
+        });
+        if (result.status === 200) {
+            return result.data;
+        }
+    } catch (err) {
+        console.log(err);
+        return {
+            'error': true,
+        }
+    }
+}
+
+const getAppointments = async() => {
+    try {
+        let result = await axios({
+            method: 'get',
+            url: url + 'appointments/' + store.state.profile.consultant_id,
+        });
+        if (result.status === 200) {
+            return {
+                'error': false,
+                'appointments': result.data,
+            }
+        }
+    } catch (err) {
+        return {
+            'error': true,
+        }
+    }
+}
 export default {
     register,
     login,
@@ -167,4 +209,6 @@ export default {
     saveProfile,
     getProfile,
     getAllConsultants,
+    makeAppointment,
+    getAppointments,
 }

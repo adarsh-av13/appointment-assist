@@ -5,7 +5,6 @@ import Landing from '../views/Landing.vue'
 import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
 import EditProfile from '../views/EditProfile.vue'
-import Profile from '../views/Profile.vue'
 import Dashboard from '../views/Dashboard.vue'
 import store from '@/store/index'
 
@@ -29,6 +28,8 @@ const routes = [{
         beforeEnter: (_to, _from, next) => {
             if (store.state.isAuthenticated)
                 next('/dashboard');
+            else if (store.state.consultee === null)
+                next('/')
             else
                 next();
         }
@@ -54,18 +55,6 @@ const routes = [{
                 next('/dashboard');
             else
                 next();
-        }
-    },
-    {
-        path: '/profile',
-        name: 'Profile',
-        component: Profile,
-        props: true,
-        beforeEnter: (_to, _from, next) => {
-            if (store.state.isAuthenticated)
-                next();
-            else
-                next('/login');
         }
     },
     {

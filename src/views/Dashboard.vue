@@ -1,5 +1,5 @@
 <template>
-  <AppointmentTable />
+  <AppointmentTable/>
 </template>
 
 <script>
